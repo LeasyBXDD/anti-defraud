@@ -8,17 +8,15 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 from deap import base, creator, tools, algorithms
 
-# 假设我们有一些历史交易数据
 historical_data = pd.read_csv('historical_data.csv')
 
-# 你的欺诈预测函数，它依赖于两个规则
+# 由于我们没有实际的金融交易数据，所以这里假设欺诈预测函数，它依赖于两个规则
 def fraud_prediction(data, rule1, rule2):
-    # 这是一个简单的模拟模型，它基于两个规则对交易进行预测
-    # 在实际情况下，你可能需要使用更复杂的模型
+    # 在实际情况下，需要使用更复杂的模型
     predictions = (data['feature1'] > rule1) & (data['feature2'] < rule2)
     return predictions
 
-# 我们想要优化的是预测的准确率，所以我们创建一个适应度函数
+# 因为想要优化的是预测的准确率，所以需要创建一个适应度函数
 # 适应度函数将规则作为输入，并返回预测的准确率
 def fitness(individual):
     rule1, rule2 = individual
@@ -27,13 +25,13 @@ def fitness(individual):
     return accuracy,
 
 # 创建问题类型
-creator.create("FitnessMax", base.Fitness, weights=(1.0,))  # 我们想要最大化适应度（预测准确率）
+creator.create("FitnessMax", base.Fitness, weights=(1.0,))  # 最大化适应度（预测准确率）
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 # 初始化规则
 toolbox = base.Toolbox()
 toolbox.register("attr_float", np.random.random)  # 规则是0-1之间的浮点数
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_float, n=2)  # 我们有两个规则
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_float, n=2)  # 两个规则
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 # 注册遗传算法操作

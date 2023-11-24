@@ -32,7 +32,6 @@ from sklearn.feature_selection import SelectFromModel
 data = pd.read_csv("financial_data.csv")
 
 # 数据预处理
-# 假设你有日期字段需要转换为时间戳
 data['date'] = pd.to_datetime(data['date'])
 data['timestamp'] = data['date'].values.astype(np.int64) // 10 ** 9
 data = data.drop(['date'], axis=1)
